@@ -8,26 +8,37 @@ import {
   Paper,
   Container
 } from '@material-ui/core';
-import axios from 'axios';
+import { useQuery } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
+import { getAllPokes } from '../../services/pokeService'
 
 function Pokemons() {
 
-  const [pokemons, setPokemons] = useState([])
+  let pokes = useQuery('pokes', getAllPokes)
 
-  useEffect(() => {
-    async function findPokemons() {
-      const response = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=10&offset=0');
-      console.log(response)
-      setPokemons(response.data.results)
-    }
-    
-    findPokemons();
-  }, []);
-
-  
-
+  return (
+    <>
+      <Container>
+        <Paper>
+          <Table aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Nome</TableCell>
+                <TableCell>Url</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {renderPokemons()}
+            </TableBody>
+          </Table>
+        </Paper>
+      </Container>
+      <ReactQueryDevtools initialIsOpen />
+    </>
+  )
+      
   function renderPokemons() {
-    console.log(pokemons)
+    let pokemons = pokes.data.results;
     return (
       pokemons && pokemons.map((pokemon) => {
         return (
@@ -39,24 +50,6 @@ function Pokemons() {
       })
     )
   }
-
-  return (
-    <Container>
-      <Paper>
-        <Table aria-label="customized table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Nome</TableCell>
-              <TableCell>Url</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {renderPokemons()}
-          </TableBody>
-        </Table>
-      </Paper>
-    </Container>
-  );
 }
 
 export default Pokemons;

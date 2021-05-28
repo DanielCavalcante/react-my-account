@@ -1,11 +1,18 @@
-import Login from './pages/login/Login';
+import React from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import Pokemons from './pages/pokes/Pokemons';
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <div>
-      <Pokemons />
-    </div>
+    <>
+    <QueryClientProvider client={queryClient}>
+      <div>
+        <Pokemons />
+      </div>
+    </QueryClientProvider>
+    </>
   );
 }
 
