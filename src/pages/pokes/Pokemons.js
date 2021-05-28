@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { 
   Table, 
   TableBody, 
@@ -14,7 +14,15 @@ import { getAllPokes } from '../../services/pokeService'
 
 function Pokemons() {
 
-  let pokes = useQuery('pokes', getAllPokes)
+  const { status, data, error } = useQuery('pokes', getAllPokes)
+
+  if (status === 'loading') {
+    return <span>Loading...</span>
+  }
+
+  if (status === 'error') {
+    return <span>Error: {error.message}</span>
+  }
 
   return (
     <>
@@ -38,9 +46,8 @@ function Pokemons() {
   )
       
   function renderPokemons() {
-    let pokemons = pokes.data.results;
     return (
-      pokemons && pokemons.map((pokemon) => {
+      data.results && data.results.map((pokemon) => {
         return (
           <TableRow>
             <TableCell>{pokemon.name}</TableCell>

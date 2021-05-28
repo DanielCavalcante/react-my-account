@@ -5,6 +5,7 @@ import Pokemons from './pages/pokes/Pokemons';
 const queryClient = new QueryClient();
 
 function App() {
+  console.log(queryClient)
   return (
     <>
     <QueryClientProvider client={queryClient}>
